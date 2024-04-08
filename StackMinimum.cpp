@@ -51,14 +51,9 @@ void StackMinimum::pop()
 	}
 	else {
 		StackData* temp;
-		if (first->data == currentMin->data)
-		{
-			temp = currentMin;
-			currentMin = currentMin->under;
-		}
+		if (first->data == currentMin->data) currentMin = currentMin->under;
 		temp = first;
 		first = first->under;
-
 		delete temp;
 	}
 }
@@ -74,21 +69,29 @@ int StackMinimum::getMin()
 void StackMinimum::push(int n)
 {
 	StackData* temp = new StackData(n);
+	StackData* temp1 = new StackData(n);
 	if (!temp) {
 		printf("\nTemporary StackData Error!");
 		exit(1);
 	}
-	if (empty()) currentMin = temp;
+	if (empty()) currentMin = temp1;
 	else
 	{
-		if (temp->data < currentMin->data)
-		{
-			temp->under = currentMin;
-			currentMin = temp;
+		StackData* prev = nullptr;
+		StackData* curr = currentMin;
+		while (curr && curr->data < n) {
+			prev = curr;
+			curr = curr->under;
 		}
-		else
+		if (!prev) 
+		{ 
+			temp1->under = currentMin;
+			currentMin = temp1;
+		}
+		else 
 		{
-			temp->under = nullptr;
+			prev->under = temp1;
+			temp1->under = curr;
 		}
 	}
 	temp->under = first;
