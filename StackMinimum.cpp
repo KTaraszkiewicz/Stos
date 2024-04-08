@@ -51,7 +51,13 @@ void StackMinimum::pop()
 	}
 	else {
 		StackData* temp;
-		if (first->data == currentMin->data) currentMin = currentMin->under;
+		if (first->data == currentMin->data)
+		{
+			StackData* temp2;
+			temp2 = currentMin;
+			currentMin = currentMin->under;
+			delete temp2;
+		}
 		temp = first;
 		first = first->under;
 		delete temp;
